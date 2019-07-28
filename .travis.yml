@@ -47,6 +47,7 @@ script:
   - find appdir/usr/lib/python3.7
   - wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
   - chmod a+x linuxdeployqt-continuous-x86_64.AppImage
+  - wget -c "https://github.com/AppImage/AppImageKit/releases/download/continuous/AppRun-x86_64" -O ./appdir/AppRun ; chmod +x appdir/AppRun
   - |
     ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage \
     -executable=$(readlink -f appdir/usr/lib/python3.7/lib-dynload/_ctypes.*.so) \
