@@ -32,8 +32,7 @@ install:
   - sudo make install -j2
   - popd
   - sudo apt-get -y remove qt5-qmake qtbase5-dev qtbase5-dev-tools
-  - sudo apt-get -y install qt512tools qt512translations qt512svg qt512base qt512imageformats
-  - sudo apt-get -y install libgl-dev python3-dev libpoppler-qt5-dev g++-8
+  - sudo apt-get -y install qt512tools qt512translations qt512svg qt512base qt512imageformats libgl-dev python3-dev libpoppler-qt5-dev g++-8
 
 before_script:
   - export PATH=/opt/qt512/bin:$PATH
@@ -43,14 +42,17 @@ script:
   - cd build
   - $cmake_3_14 .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=g++-8 -DQT_QM_PATH=/opt/qt512/translations -DCMAKE_PREFIX_PATH=/opt/qt512 -DCMAKE_INSTALL_PREFIX=/usr # -DCMAKE_PREFIX_PATH=$pybind11_DIR/build
   - make -j$(nproc)
-  - make DESTDIR=appdir -j$(nproc) install ; find appdir/
+  # make DESTDIR=appdir -j$(nproc) install ; find appdir/ # FIXME; "make install" should do the following properly
+  - mkdir -p ./appdir/usr/bin ; cp ommpfritt ./appdir/usr/bin/ # FIXME
+  - mkdir -p ./appdir/usr/share/applications ; cp ../ommpfritt.desktop ./appdir/usr/share/applications/ # FIXME
+  - mkdir -p ./appdir/usr/share/icons/hicolor/scalable/apps ; touch ./appdir/usr/share/icons/hicolor/scalable/apps/ommpfritt.svg # FIXME
   - wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
   - chmod a+x linuxdeployqt-continuous-x86_64.AppImage
   - ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage
 
 after_success:
   - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
-  - bash upload.sh APPNAME*.AppImage*
+  - bash upload.sh ommpfritt*.AppImage*
   - touch success
   
 branches:
