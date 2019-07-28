@@ -24,7 +24,7 @@ before_install:
 script:
   # Python
   - pushd Python-3.7.0
-  - ./configure
+  - ./configure --prefix=/usr
   - sudo make altinstall -j2
   - popd
   # pybind11
@@ -43,7 +43,7 @@ script:
   - mkdir -p ./appdir/usr/bin ; cp ommpfritt ./appdir/usr/bin/ # FIXME
   - mkdir -p ./appdir/usr/share/applications ; cp ../ommpfritt.desktop ./appdir/usr/share/applications/ # FIXME
   - mkdir -p ./appdir/usr/share/icons/hicolor/scalable/apps ; touch ./appdir/usr/share/icons/hicolor/scalable/apps/ommpfritt.svg # FIXME
-  - cp -r /usr/lib/ -type d -name 'python3.7' -exec cp {} ./appdir/usr/lib \;
+  - mkdir -p ./appdir/usr/lib ; find /usr/lib/ -type d -name 'python3.7' -exec cp -r {} ./appdir/usr/lib/ \;
   - find appdir/usr/lib/python3.7
   - wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
   - chmod a+x linuxdeployqt-continuous-x86_64.AppImage
